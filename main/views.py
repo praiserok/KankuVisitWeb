@@ -26,8 +26,8 @@ def coach(request):
         'title': Coach._meta.verbose_name,
         'titles': Coach._meta.verbose_name_plural,
         'data': coachs,
-        ''
         'error': error,
+        'activeCoach': 'active',
     }
 
     return render(request, 'main/admin/pages/coach.html', context)
@@ -52,6 +52,7 @@ def sportsman(request):
         'titles': Sportsman._meta.verbose_name_plural,
         'data': sportsmans,
         'error': error,
+        'activeSportsman': 'active',
     }
 
     return render(request, 'main/admin/pages/sportsman.html', context)
@@ -76,6 +77,7 @@ def school(request):
         'titles': School._meta.verbose_name_plural,
         'data': school,
         'error': error,
+        'activeSchool': 'active',
     }
 
     return render(request, 'main/admin/pages/school.html', context)

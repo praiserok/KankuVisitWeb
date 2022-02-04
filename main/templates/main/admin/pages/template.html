@@ -4,7 +4,7 @@
 
 {% block navigation %}
 
-<nav class="navbar navbar-expand-sm navbar-light bg-light mb-4 sticky-sm-top" aria-label="Third navbar example">
+<nav class="navbar navbar-expand-sm navbar-light bg-light mb-3 sticky-sm-top" aria-label="Third navbar example">
   <div class="container-fluid" bis_skin_checked="1">
 
     <a class="navbar-brand" href="#"></a>
@@ -18,15 +18,15 @@
       <ul class="navbar-nav">
 
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'coach' %}">Тренери</a>
+          <a class="nav-link {{ activeCoach }}" href="{% url 'coach' %}">Тренери</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'sportsman' %}">Спортсмени</a>
+          <a class="nav-link {{ activeSportsman }}" href="{% url 'sportsman' %}">Спортсмени</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'school' %}">Школи</a>
+          <a class="nav-link {{ activeSchool }}" href="{% url 'school' %}">Зали</a>
         </li>
 
         <!-- <li class="nav-item">
@@ -45,7 +45,8 @@
       </ul>
     </div>
 
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <button type="button" class="btn btn-outline-danger d-none d-sm-block" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop">
       Додати {{ title }}
     </button>
 
@@ -63,7 +64,8 @@
     <span>{{ error }}</span>
   </div>
 
-  <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  <button type="button" class="btn btn-outline-danger d-sm-none" data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop">
     Додати {{ title }}
   </button>
 </div>
@@ -107,9 +109,8 @@
           {% endblock forms %}
 
           <button type="submit" class="btn btn-outline-danger">Додати
-            <span class="badge bg-danger"> у таблицю {{ titles }}</span>
+            <span class="badge bg-danger text-light">{{ title }}</span>
           </button>
-          <span class="badge bg-danger text-light">Дані буде внесено у таблицю {{ titles }}</span>
         </form>
 
       </div>
