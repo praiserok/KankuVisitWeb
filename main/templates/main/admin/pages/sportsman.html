@@ -3,7 +3,7 @@
 {% block headerTable %}
 <th scope="col">#</th>
 <th scope="col">Імя</th>
-<th scope="col">Фамілія</th>
+<th scope="col">Прізвище</th>
 <th scope="col">Телефон</th>
 <th scope="col">Тренер</th>
 <th scope="col">Тренується?</th>
@@ -22,3 +22,13 @@
   </div>
 </td>
 {% endblock table %}
+
+{% block forms %}
+
+{% for form in forms %}
+<div class="col-md-6">
+  {{ form }}
+</div>
+{% endfor %}
+
+{% endblock forms %}

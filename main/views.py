@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import CoachForm, SportsmanForm
-from .models import Sportsman, Coach, Sportsman
+from .forms import CoachForm, SportsmanForm, SchoolForm
+from .models import School, Sportsman, Coach, Sportsman
 
 
 def index(request):
@@ -55,6 +55,30 @@ def sportsman(request):
     }
 
     return render(request, 'main/admin/pages/sportsman.html', context)
+
+
+def school(request):
+    error = ''
+    if request.method == 'POST':
+        form = SchoolForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('school')
+        else:
+            error = 'Форма була не вірною!'
+
+    school = School.objects.all()
+    form = SchoolForm()
+
+    context = {
+        'forms': form,
+        'title': School._meta.verbose_name,
+        'titles': School._meta.verbose_name_plural,
+        'data': school,
+        'error': error,
+    }
+
+    return render(request, 'main/admin/pages/school.html', context)
 
 
 def about(request):

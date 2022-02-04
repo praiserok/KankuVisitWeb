@@ -1,6 +1,4 @@
-from .models import Sportsman, Task
-from .models import Coach
-
+from .models import Sportsman, Coach, School
 from django.forms import (ModelForm, TextInput, Textarea, EmailInput,
                           PasswordInput, DateInput, NumberInput, URLInput,
                           Select)
@@ -113,5 +111,29 @@ class SportsmanForm(ModelForm):
             'belt':
             Select(attrs={
                 'class': 'form-select',
+            }),
+        }
+
+
+class SchoolForm(ModelForm):
+
+    class Meta:
+        model = School
+        fields = ['name', 'city', 'adress']
+        widgets = {
+            'name':
+            TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введіть назва'
+            }),
+            'city':
+            TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введіть місто'
+            }),
+            'adress':
+            TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введіть адресу',
             }),
         }
