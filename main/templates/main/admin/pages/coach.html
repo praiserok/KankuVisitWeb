@@ -1,0 +1,24 @@
+{% extends 'main/admin/pages/template.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">Імя</th>
+<th scope="col">Фамілія</th>
+<th scope="col">Телефон</th>
+<th scope="col">Школа</th>
+<th scope="col">Тренує</th>
+{% endblock headerTable %}
+
+{% block table %}
+<th class="table-light" scope="row">{{one.id}}</th>
+<td>{{one.first_name}}</td>
+<td>{{one.last_name}}</td>
+<td>{{one.telephone}}</td>
+<td>{{one.school_set.first}}</td>
+<td>
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled {% if one.is_active == True %}
+      checked {% endif %}>
+  </div>
+</td>
+{% endblock table %}
