@@ -1,4 +1,4 @@
-{% extends 'main/admin/pages/template.html' %}
+{% extends 'main/visit/templates/baseVisit.html' %}
 
 {% block headerTable %}
 <th scope="col">#</th>
@@ -23,12 +23,20 @@
 </td>
 {% endblock table %}
 
-{% block forms %}
+{% block formsadd %}
 
-{% for form in forms %}
+{% for f in forms %}
+
+<div class="form-floating col-12" bis_skin_checked="1">
+  {{f}}
+  <label for="{{f.id_for_label}}">{{f.label}}</label>
+  <div id="emailHelp" class="form-text">{{f.errors}}</div>
+</div>
+
+{% endfor %}
+<!--
 <div class="col-md-12">
   {{ form }}
 </div>
-{% endfor %}
-
-{% endblock forms %}
+-->
+{% endblock formsadd %}

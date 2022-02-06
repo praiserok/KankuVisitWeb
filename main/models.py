@@ -1,28 +1,19 @@
-from calendar import day_abbr
-import email
-from operator import truediv
-from time import time
-from tokenize import group
 from unicodedata import name
 from django.db import models
-
-gradation = [(0, 'Білий пояс'), (10, '10 кю'), (9, '9 кю'), (8, '8 кю'),
-             (7, '7 кю'), (6, '6 кю'), (5, '5 кю'), (4, '4 кю'), (3, '3 кю'),
-             (2, '2 кю'), (1, '1 кю'), (11, '1 дан'), (12, '2 дан'),
-             (13, '3 дан'), (14, '4 дан'), (15, '5 дан'), (16, '6 дан'),
-             (17, '7 дан'), (18, '8 дан'), (19, '9 дан')]
+from django.urls import reverse
 
 
-class Task(models.Model):
-    title = models.CharField('Назва', max_length=50)
-    task = models.TextField('Опис')
+class Belt(models.Model):
+    name = models.CharField('Назва', max_length=20)
+    kyu = models.IntegerField('Кю')
+    img = models.ImageField('Фото', upload_to='belt/%Y/', blank=True)
 
     def __str__(self):
-        return self.title
+        return self.kyu
 
     class Meta:
-        verbose_name = 'Завдання'
-        verbose_name_plural = 'Завдання'
+        verbose_name = 'Пояс'
+        verbose_name_plural = 'Пояси'
 
 
 class Coach(models.Model):
@@ -35,12 +26,13 @@ class Coach(models.Model):
     dateBirth = models.DateField('Дата народження')
     telephone = models.IntegerField('Номер телефону')
     telephone2 = models.IntegerField('Номер телефону 2', blank=True, null=True)
-    belt = models.SmallIntegerField('Рівень поясу',
-                                    choices=gradation,
-                                    default=0,
-                                    null=True)
+    belts = models.ForeignKey(Belt,
+                              on_delete=models.SET_NULL,
+                              blank=True,
+                              null=True)
     information = models.TextField('Інформація про тренера')
-    photo = models.ImageField('Фото', blank=True)
+    photo = models.ImageField(
+        'Фото', upload_to='coach/photo/%Y/%m/%d/', blank=True)
     is_active = models.BooleanField('Тренує?', default=True)
 
     def __str__(self):
@@ -49,6 +41,9 @@ class Coach(models.Model):
     class Meta:
         verbose_name = 'Тренер'
         verbose_name_plural = 'Тренери'
+
+    def get_absolute_url(self):
+        return reverse("coachedit", kwargs={"coach_id": self.pk})
 
 
 class School(models.Model):
@@ -67,6 +62,9 @@ class School(models.Model):
     class Meta:
         verbose_name = 'Школа'
         verbose_name_plural = 'Школи'
+
+    def get_absolute_url(self):
+        return reverse("schooledit", kwargs={"school_id": self.pk})
 
 
 class Group(models.Model):
@@ -94,6 +92,9 @@ class Group(models.Model):
         verbose_name = 'Група'
         verbose_name_plural = 'Групи'
 
+    # def get_absolute_url(self):
+    #     return reverse("group", kwargs={"groupid": self.pk})
+
 
 class Timetable(models.Model):
     day = models.CharField('День', max_length=15)
@@ -108,6 +109,9 @@ class Timetable(models.Model):
         verbose_name = 'Графік'
         verbose_name_plural = 'Графіки'
 
+    # def get_absolute_url(self):
+    #     return reverse("timetable", kwargs={"timetableid": self.pk})
+
 
 class Sportsman(models.Model):
     first_name = models.CharField('Імя', max_length=20)
@@ -115,10 +119,10 @@ class Sportsman(models.Model):
     surname = models.CharField('По батькові', max_length=20, blank=True)
     dateBirth = models.DateField('Дата народження')
     telephone = models.IntegerField('Номер телефону')
-    belt = models.SmallIntegerField('Рівень поясу',
-                                    choices=gradation,
-                                    default=0,
-                                    null=True)
+    belts = models.ForeignKey(Belt,
+                              on_delete=models.SET_NULL,
+                              blank=True,
+                              null=True)
     is_active = models.BooleanField('Тренується?', default=True)
     coach = models.ForeignKey(Coach,
                               on_delete=models.SET_NULL,
@@ -135,3 +139,6 @@ class Sportsman(models.Model):
     class Meta:
         verbose_name = 'Спортсмен'
         verbose_name_plural = 'Спортсмени'
+
+    def get_absolute_url(self):
+        return reverse("sportsmanEdit", kwargs={"sportsman_id": self.pk})
