@@ -35,7 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'belt.apps.BeltConfig',
     'main.apps.MainConfig',
+    'coach.apps.CoachConfig',
+    'sportsman.apps.SportsmanConfig',
+    'school.apps.SchoolConfig',
+    'group.apps.GroupConfig',
+    'timetable.apps.TimetableConfig',
     "crispy_forms",
     "crispy_bootstrap5",
 ]
@@ -115,16 +121,23 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+DATE_FORMAT = "Y-m-d"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATIC_ROOT = '/home/c/co00847/newsite/public_html/static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/home/c/co00847/newsite/public_html/static',
+]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

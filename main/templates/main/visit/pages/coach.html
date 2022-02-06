@@ -35,6 +35,10 @@
 
 {% endblock table %}
 
+{% block urldelete %}
+{% url 'coachdDelete' one.id %}
+{% endblock urldelete %}
+
 {% block formsadd %}
 
 {% for f in forms %}

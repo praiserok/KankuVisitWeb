@@ -114,8 +114,8 @@
               </svg>
             </a>
 
-            <a href="{{request.path}}/{{one.id}}/delete" class="btn btn-danger btn-sm" tabindex="-1" role="button"
-              aria-disabled="true">
+            <a href="{% block urldelete %}{% endblock urldelete %}" class="btn btn-danger btn-sm" tabindex="-1"
+              role="button" aria-disabled="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"

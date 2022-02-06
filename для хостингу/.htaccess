@@ -3,4 +3,4 @@ AddDefaultCharset utf-8
 AddHandler wsgi-script .py
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ taskmanager/taskmanager/wsgi.py/$1 [QSA,L]
+RewriteRule ^(.*)$ kankuvisit/kankuvisit/wsgi.py/$1 [QSA,L]

@@ -2,29 +2,18 @@
 <!--{% load crispy_forms_tags %}-->
 
 {%block content%}
-<form method="post">
+<form class="row g-3 justify-content-center" method="post">
   {% csrf_token %}
 
   <h2>Редагувати {{ data }}</h2>
-
-  <input type="text" value="{{data.first_name}}" name="first_name">
-  <input type="text" value="{{data.last_name}}" name="last_name">
-  <input type="text" value="{{data.surname}}" name="surname">
-  <input type="date" value="{{data.dateBirth}}" name="dateBirth">
-  <input type="email" value="{{data.email}}" name="email">
-  <input type="file" value="{{data.photo}}" name="photo">
-  <input type="tel" value="{{data.telephone}}" name="telephone">
-  <input type="tel" value="{{data.telephone2}}" name="telephone2">
-  <input type="text" value="{{data.belt}}" name="belt">
-  <textarea name="information">{{data.information}}</textarea>
-  <input type="checkbox" value="{{data.is_active}}" name="is_active">
+  {% block inputedit %}
 
 
-
+  {% endblock inputedit %}
 
   <button type="submit" class="btn btn-outline-danger">Редагувати
     <span class="badge bg-danger text-light">{{ title }}</span>
-  </button> -->
+  </button>
 
 </form>
 

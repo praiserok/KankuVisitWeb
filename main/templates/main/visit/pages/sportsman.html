@@ -23,6 +23,10 @@
 </td>
 {% endblock table %}
 
+{% block urldelete %}
+{% url 'sportsmanDelete' one.id %}
+{% endblock urldelete %}
+
 {% block formsadd %}
 
 {% for f in forms %}
