@@ -1,6 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import CoachAddForm
 from .models import Coach
+from django.views.generic import DetailView, ListView, UpdateView
+
+
+class CoachEditView(UpdateView):
+    model = Coach
+    template_name = 'coach/visit/coachedit.html'
+    form_class = CoachAddForm
 
 
 def coach(request):
@@ -27,35 +34,8 @@ def coach(request):
     return render(request, 'coach/visit/coach.html', context)
 
 
-def coachEdit(request, coach_id):
-    coach = Coach.objects.get(pk=coach_id)
-    # form = CoachEditForm()
-
-    if request.method == 'POST':
-        # print(request.POST.get())
-        coach.first_name = request.POST.get('first_name')
-        coach.last_name = request.POST.get('last_name')
-        coach.surname = request.POST.get('surname')
-        coach.dateBirth = request.POST.get('dateBirth')
-        coach.email = request.POST.get('email')
-        coach.photo = request.POST.get('photo')
-        coach.telephone = request.POST.get('telephone')
-        coach.telephone2 = request.POST.get('telephone2')
-        coach.belt = request.POST.get('belt')
-        coach.information = request.POST.get('information')
-        if request.POST.get('is_active') == 'on':
-            coach.is_active = 1
-        else:
-            coach.is_active = 0
-        coach.save()
-
-    context = {'data': coach}
-
-    return render(request, 'main/visit/pages/coach/coachedit.html',  context)
-
-
-def coachDelete(request, coach_id):
-    coach = Coach.objects.get(pk=coach_id)
+def coachDelete(request, pk):
+    coach = Coach.objects.get(pk=pk)
     coach.delete()
 
     return redirect(request.META['HTTP_REFERER'])

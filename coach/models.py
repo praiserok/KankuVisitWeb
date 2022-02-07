@@ -31,4 +31,5 @@ class Coach(models.Model):
         verbose_name_plural = 'Тренери'
 
     def get_absolute_url(self):
-        return reverse("coach-edit", kwargs={"coach_id": self.pk})
+        return reverse('coach')
+        # ("coach-edit", kwargs={"coach_id": self.pk})

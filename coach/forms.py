@@ -8,8 +8,8 @@ from django.forms import (CheckboxInput, ModelForm, TextInput, Textarea, EmailIn
 class CoachAddForm(ModelForm):
     class Meta:
         model = Coach
-        # fields = '__all__'
-        exclude = ['is_active']
+        fields = '__all__'
+        # exclude = ['is_active']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть ім\'я'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть прізвище'}),

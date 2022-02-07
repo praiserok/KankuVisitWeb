@@ -35,24 +35,10 @@
 
 {% endblock table %}
 
+{% block urledit %}
+{% url 'coach-edit' one.id %}
+{% endblock %}
+
 {% block urldelete %}
 {% url 'coach-delete' one.id %}
-{% endblock urldelete %}
-
-{% block formsadd %}
-
-{% for f in forms %}
-
-<div class="form-floating col-md-6" bis_skin_checked="1">
-  {{f}}
-  <label for="{{f.id_for_label}}">{{f.label}}</label>
-  <div id="emailHelp" class="form-text">{{f.errors}}</div>
-</div>
-
-{% endfor %}
-<!--
-<div class="col-md-6">
-  {{ form }}
-</div>
--->
-{% endblock formsadd %}
+{% endblock %}

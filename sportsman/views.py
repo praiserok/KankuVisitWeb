@@ -2,6 +2,18 @@ from django.shortcuts import render, redirect
 from sportsman.forms import SportsmanAddForm
 
 from sportsman.models import Sportsman
+from django.views.generic import DetailView, ListView, UpdateView
+
+
+# class SportsmanEditView(DetailView):
+#     model = Sportsman
+#     template_name = 'sportsman/visit/sportsmenan_view.html'
+#     context_object_name = 'Sportsman'
+
+class SportsmanEditView(UpdateView):
+    model = Sportsman
+    template_name = 'sportsman/visit/sportsmanedit.html'
+    form_class = SportsmanAddForm
 
 
 def sportsman(request):
@@ -13,6 +25,7 @@ def sportsman(request):
             form.save()
         else:
             error = 'Введено не коректні дані!'
+
     sportsmans = Sportsman.objects.all()
     form = SportsmanAddForm()
 
@@ -28,49 +41,8 @@ def sportsman(request):
     return render(request, 'sportsman/visit/sportsman.html', context)
 
 
-def sportsmanEdit(request, sportsman_id):
-    sportsman = Sportsman.objects.get(pk=sportsman_id)
-    success = ''
-    error = ''
-
-    if request.method == 'POST':
-        form = SportsmanAddForm(request.POST)
-        if form.is_valid():
-            form.update()
-        else:
-            error = 'Введено не коректні дані! Форма не збережена'
-    # sportsmans = Sportsman.objects.all()
-    print(sportsman)
-    form = SportsmanAddForm()
-
-    # if request.method == 'POST':
-
-    #     sportsman.first_name = request.POST.get('first_name')
-    #     sportsman.last_name = request.POST.get('last_name')
-    #     sportsman.surname = request.POST.get('surname')
-    #     sportsman.dateBirth = request.POST.get('dateBirth')
-
-    #     sportsman.telephone = request.POST.get('telephone')
-
-    #     coach.belt = request.POST.get('belt')
-    #     coach.information = request.POST.get('information')
-    #     if request.POST.get('is_active') == 'on':
-    #         sportsman.is_active = 1
-    #     else:
-    #         sportsman.is_active = 0
-    #     sportsman.save()
-    #     success = 'Всі зміни збережено'
-    # else:
-    #     error = 'Нажаль не вдалось внести зміни'
-
-    context = {'data': sportsman, 'form': form,
-               'success': success, 'error': error}
-
-    return render(request, 'sportsman/visit/sportsmanedit.html',  context)
-
-
-def sportsmanDelete(request, sportsman_id):
-    sportsman = Sportsman.objects.get(pk=sportsman_id)
+def sportsmanDelete(request, pk):
+    sportsman = Sportsman.objects.get(pk=pk)
     sportsman.delete()
 
     return redirect(request.META['HTTP_REFERER'])

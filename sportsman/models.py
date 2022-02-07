@@ -15,7 +15,6 @@ class Sportsman(models.Model):
                               on_delete=models.SET_NULL,
                               blank=True,
                               null=True)
-    is_active = models.BooleanField('Тренується?', default=True)
     coach = models.ForeignKey(Coach,
                               on_delete=models.SET_NULL,
                               blank=True,
@@ -24,6 +23,7 @@ class Sportsman(models.Model):
                               on_delete=models.SET_NULL,
                               blank=True,
                               null=True)
+    is_active = models.BooleanField('Тренується?', default=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -33,4 +33,5 @@ class Sportsman(models.Model):
         verbose_name_plural = 'Спортсмени'
 
     def get_absolute_url(self):
-        return reverse("sportsman-edit", kwargs={"sportsman_id": self.pk})
+        return reverse('sportsman')
+        # reverse("sportsman-edit", kwargs={"pk": self.pk})
