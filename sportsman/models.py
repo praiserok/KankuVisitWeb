@@ -7,8 +7,8 @@ from group.models import Group
 
 class Sportsman(models.Model):
     first_name = models.CharField('Імя', max_length=20)
-    last_name = models.CharField('Прізвище', max_length=25)
     surname = models.CharField('По батькові', max_length=20, blank=True)
+    last_name = models.CharField('Прізвище', max_length=25)
     dateBirth = models.DateField('Дата народження')
     telephone = models.IntegerField('Номер телефону')
     belts = models.ForeignKey(Belt,

@@ -7,11 +7,15 @@ class SchoolAddForm(ModelForm):
 
     class Meta:
         model = School
-        # fields = '__all__'
-        exclude = ['is_active']
+        fields = '__all__'
+        # exclude = ['is_active']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть назва'}),
             'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть місто'}),
             'adress': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть адресу'}),
-            'coach': Select(attrs={'class': 'form-select '})
+            'coach': Select(attrs={'class': 'form-select '}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['coach'].empty_label = 'Тренера не обарано'

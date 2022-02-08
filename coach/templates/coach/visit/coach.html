@@ -11,20 +11,23 @@
 <th scope="col">Пояс</th>
 <th scope="col">Інформація</th>
 <th scope="col">Тренує?</th>
-
-
 {% endblock headerTable %}
 
 {% block table %}
 
 <th class="table-light" scope="row">{{one.id}}</th>
-<td>{{one.first_name}}</td>
-<td>{{one.last_name}}</td>
+<td><a href="{% url 'coach-edit' one.id %}">{{one.first_name}}</a></td>
+<td><a href="{% url 'coach-edit' one.id %}">{{one.last_name}}</a></td>
 <td>{{one.telephone}}</td>
-<td>{{one.school_set.first}}</td>
+<td>
+  {% for school  in one.school_set.all %}
+ <a href="{% url 'school-edit' school.id %}"> {{school}}</a><br>
+  {% endfor %}
+</td>
 <td>{{one.email}}</td>
 <td>{{one.telephone}}</td>
-<td>{{one.belt}}</td>
+<td>{% if one.belts != none %}<a href="{% url 'belt-edit' one.belts.id %}">{{one.belts}}</a>
+  {% else %}{{one.belts}}{% endif %}</td>
 <td>{{one.information}}</td>
 <td>
   <div class="form-check form-switch">

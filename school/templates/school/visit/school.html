@@ -1,20 +1,21 @@
 {% extends 'main/visit/templates/baseVisit.html' %}
 
-{% block headerTable %}
+{% comment %} {% block headerTable %}
 <th scope="col">#</th>
 <th scope="col">Назва</th>
 <th scope="col">Місто</th>
 <th scope="col">Адрес</th>
 <th scope="col">Тренер</th>
 <th scope="col">Працює?</th>
-{% endblock headerTable %}
+{% endblock headerTable %} {% endcomment %}
 
 {% block table %}
 <th class="table-light" scope="row">{{one.id}}</th>
-<td>{{one.name}}</td>
+<td><a href="{% url 'school-edit' one.id %}">{{one.name}}</a></td>
 <td>{{one.city}}</td>
 <td>{{one.adress}}</td>
-<td>{{one.coach}}</td>
+<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
+  {% else %}{{one.coach}}{% endif %}</td>
 <td>
   <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled {% if one.is_active == True %}
@@ -23,24 +24,12 @@
 </td>
 {% endblock table %}
 
+
+
+{% block urledit %}
+{% url 'school-edit' one.id %}
+{% endblock %}
+
 {% block urldelete %}
-{% url 'schoolDelete' one.id %}
-{% endblock urldelete %}
-
-{% block formsadd %}
-
-{% for f in forms %}
-
-<div class="form-floating col-12" bis_skin_checked="1">
-  {{f}}
-  <label for="{{f.id_for_label}}">{{f.label}}</label>
-  <div id="emailHelp" class="form-text">{{f.errors}}</div>
-</div>
-
-{% endfor %}
-<!--
-<div class="col-md-12">
-  {{ form }}
-</div>
--->
-{% endblock formsadd %}
+{% url 'school-delete' one.id %}
+{% endblock %}

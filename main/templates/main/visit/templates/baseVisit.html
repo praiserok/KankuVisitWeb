@@ -85,17 +85,31 @@
 
     <thead class="table-dark">
       <tr>
+
         {% block headerTable %}
 
+        {% for field in fields %}
+
+        <th scope="col">{{field.verbose_name}}</th>
+        {% endfor %}
+
         {% endblock headerTable %}
+
         <th scope="col">Дія</th>
       </tr>
     </thead>
 
     <tbody>
+
       {% for one in data %}
       <tr>
+
         {% block table %}
+        <td>
+          <div class='alert-danger'>Не створено шаблону для
+            виводу! Шаблон: <span class='alert-success'>{{table}}<span></div>
+
+        </td>
 
         {% endblock table %}
 
@@ -150,26 +164,16 @@
 
           {% block formsadd %}
 
-
           {% for f in forms %}
-
 
           <div class="form-floating col-md-6" bis_skin_checked="1">
 
-            {% if f.value == True %}
+            {% if f.html_name == 'is_active' %}
             <div class="form-check form-switch form-floating col-md-6">
               <input class="form-check-input" type="checkbox" name="is_active" id="flexSwitchCheckChecked"
-                placeholder="Тренується" checked>
-              <p>Тренується?</p>
+                placeholder="Тренується" {% if f.value == True %} checked {% endif %}>
+              <p>Активний?</p>
             </div>
-
-
-            {% elif f.value == False %}
-            <div class="form-check form-switch form-floating col-md6">
-              <input class="form-check-input" type="checkbox" name="is_active" id="flexSwitchCheckChecked"
-                placeholder="Тренується">
-            </div>
-            <p>Тренується?</p>
 
             {% else %}
             {{f}}

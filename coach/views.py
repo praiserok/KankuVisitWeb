@@ -8,26 +8,36 @@ class CoachEditView(UpdateView):
     model = Coach
     template_name = 'coach/visit/coachedit.html'
     form_class = CoachAddForm
+    extra_context = {
+        'activeCoach': 'active'
+    }
 
 
 def coach(request):
+    model = Coach.objects.all()
     error = ''
+    fields = Coach._meta.fields
+    table = Coach._meta.app_label
+
     if request.method == 'POST':
         form = CoachAddForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
         else:
-            error = 'Введено не коректні дані!'
+            form = CoachAddForm(request.POST)
+            error = 'Введено не коректні дані:'
+    else:
 
-    coachs = Coach.objects.all()
-    form = CoachAddForm()
+        form = CoachAddForm()
 
     context = {
         'forms': form,
         'title': Coach._meta.verbose_name,
         'titles': Coach._meta.verbose_name_plural,
-        'data': coachs,
+        'data': model,
+        'fields': fields,
         'error': error,
+        'table': table,
         'activeCoach': 'active'
     }
 
@@ -35,7 +45,7 @@ def coach(request):
 
 
 def coachDelete(request, pk):
-    coach = Coach.objects.get(pk=pk)
-    coach.delete()
+    item = Coach.objects.get(pk=pk)
+    item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

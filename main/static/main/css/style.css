@@ -10,3 +10,12 @@ padding-right: 5px;
   padding: 15px;
   margin: auto;
 }
+
+ a {
+  color: #212529;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #198754;
+}

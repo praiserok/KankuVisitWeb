@@ -9,6 +9,7 @@ class BeltAddForm(ModelForm):
         fields = '__all__'
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть назву'}),
-            'kyu': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введіть'}),
+            'fullname': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть повну назву'}),
+            'number': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Введіть номер поясу'}),
             'img': URLInput(attrs={'type': 'file', 'class': 'form-control', }),
         }

@@ -1,20 +1,29 @@
 {% extends 'main/visit/templates/baseVisit.html' %}
 
-{% block headerTable %}
+{% comment %} {% block headerTable %}
 <th scope="col">#</th>
 <th scope="col">Імя</th>
 <th scope="col">Прізвище</th>
 <th scope="col">Телефон</th>
 <th scope="col">Тренер</th>
 <th scope="col">Тренується?</th>
-{% endblock headerTable %}
+{% endblock headerTable %} {% endcomment %}
 
 {% block table %}
 <th class="table-light" scope="row">{{one.id}}</th>
-<td>{{one.first_name}}</td>
-<td>{{one.last_name}}</td>
+<td><a href="{% url 'sportsman-edit' one.id %}">{{one.first_name}}</a></td>
+<td><a href="{% url 'sportsman-edit' one.id %}">{{one.surname}}</a></td>
+<td><a href="{% url 'sportsman-edit' one.id %}">{{one.last_name}}</a></td>
+<td>{{one.dateBirth}}</td>
 <td>{{one.telephone}}</td>
-<td>{{one.coach}}</td>
+
+<td>{% if one.belts != none %}<a href="{% url 'belt-edit' one.belts.id %}">{{one.belts}}</a>
+  {% else %}{{one.belts}}{% endif %}</td>
+<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
+  {% else %}{{one.coach}}{% endif %}</td>
+<td>{% if one.group != none %}<a href="{% url 'group-edit' one.group.id %}">{{one.group}}</a>
+{% else %} {{one.group}} {%endif%}</td>
+
 <td>
   <div class="form-check form-switch">
     <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" disabled {% if one.is_active == True %}

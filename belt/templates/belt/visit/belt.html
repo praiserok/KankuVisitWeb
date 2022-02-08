@@ -1,0 +1,41 @@
+{% extends 'main/visit/templates/baseVisit.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">Пояс</th>
+<th scope="col">Повна назва</th>
+<th scope="col">Номер</th>
+<!-- <th scope="col">Картинка</th> -->
+
+{% endblock headerTable %}
+
+{% block table %}
+<th class="table-light" scope="row">{{one.id}}</th>
+<td><a href="{% url 'belt-edit' one.id %}">{{one.name}}</a></td>
+<td><a href="{% url 'belt-edit' one.id %}">{{one.fullname}}</a></td>
+<td><a href="{% url 'belt-edit' one.id %}">{{one.number}}</a></td>
+<!-- <td>{{one.img}}</td> -->
+{% endblock table %}
+
+{% block formsadd %}
+
+
+{% for f in forms %}
+
+<div class="form-floating col-12" bis_skin_checked="1">
+  {{f}}
+  <label for="{{f.id_for_label}}">{{f.label}}</label>
+  <div id="emailHelp" class="form-text">{{f.errors}}</div>
+</div>
+
+{% endfor %}
+
+{% endblock formsadd %}
+
+{% block urledit %}
+{% url 'belt-edit' one.id %}
+{% endblock %}
+
+{% block urldelete %}
+{% url 'belt-delete' one.id %}
+{% endblock %}

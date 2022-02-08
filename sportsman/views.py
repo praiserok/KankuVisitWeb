@@ -14,6 +14,9 @@ class SportsmanEditView(UpdateView):
     model = Sportsman
     template_name = 'sportsman/visit/sportsmanedit.html'
     form_class = SportsmanAddForm
+    extra_context = {
+        'activeSportsman': 'active'
+    }
 
 
 def sportsman(request):
@@ -23,17 +26,23 @@ def sportsman(request):
         form = SportsmanAddForm(request.POST)
         if form.is_valid():
             form.save()
+            return redirect('sportsman')
         else:
             error = 'Введено не коректні дані!'
 
-    sportsmans = Sportsman.objects.all()
+    model = Sportsman.objects.all()
+
     form = SportsmanAddForm()
+    fields = Sportsman._meta.fields
+    table = Sportsman._meta.app_label
 
     context = {
         'forms': form,
         'title': Sportsman._meta.verbose_name,
         'titles': Sportsman._meta.verbose_name_plural,
-        'data': sportsmans,
+        'data': model,
+        'fields': fields,
+        'table': table,
         'error': error,
         'activeSportsman': 'active',
     }
@@ -42,7 +51,7 @@ def sportsman(request):
 
 
 def sportsmanDelete(request, pk):
-    sportsman = Sportsman.objects.get(pk=pk)
-    sportsman.delete()
+    item = Sportsman.objects.get(pk=pk)
+    item.delete()
 
     return redirect(request.META['HTTP_REFERER'])
