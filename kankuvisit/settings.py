@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'school.apps.SchoolConfig',
     'group.apps.GroupConfig',
     'timetable.apps.TimetableConfig',
-    "crispy_forms",
-    "crispy_bootstrap5",
+
 ]
 
 MIDDLEWARE = [
@@ -107,10 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
