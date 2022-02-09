@@ -14,7 +14,7 @@ class CoachEditView(UpdateView):
 
 
 def coach(request):
-    model = Coach.objects.all()
+    model = Coach.objects.all().order_by('-belts')
     error = ''
     fields = Coach._meta.fields
     table = Coach._meta.app_label
@@ -23,11 +23,10 @@ def coach(request):
         form = CoachAddForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            return redirect('coach')
         else:
-            form = CoachAddForm(request.POST)
             error = 'Введено не коректні дані:'
     else:
-
         form = CoachAddForm()
 
     context = {

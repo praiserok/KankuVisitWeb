@@ -5,6 +5,7 @@ from school.models import School
 
 
 class Group(models.Model):
+
     name = models.CharField('Імя', max_length=20)
     school = models.ForeignKey(School,
                                on_delete=models.CASCADE,
@@ -29,5 +30,5 @@ class Group(models.Model):
         verbose_name = 'Група'
         verbose_name_plural = 'Групи'
 
-    # def get_absolute_url(self):
-    #     return reverse("group", kwargs={"groupid": self.pk})
+    def get_absolute_url(self):
+        return reverse('group')

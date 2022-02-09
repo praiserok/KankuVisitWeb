@@ -17,20 +17,19 @@ class SchoolEditView(UpdateView):
 
 def school(request):
     error = ''
+    model = School.objects.all().order_by('coach')
+    fields = School._meta.fields
+    table = School._meta.app_label
 
     if request.method == 'POST':
-        form = SchoolAddForm(request.POST)
+        form = SchoolAddForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('school')
         else:
             error = 'Введено не коректні дані!'
-
-    model = School.objects.all()
-
-    form = SchoolAddForm()
-    fields = School._meta.fields
-    table = School._meta.app_label
+    else:
+        form = SchoolAddForm()
 
     # fields = School._meta.get_field('name')
     # print(School._meta.app_label) Таблиця назва

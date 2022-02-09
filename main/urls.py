@@ -7,6 +7,8 @@ urlpatterns = [
     path('sportsman/', include('sportsman.urls')),
     path('school/', include('school.urls')),
     path('belt/', include('belt.urls')),
+    path('group/', include('group.urls')),
+    path('timetable/', include('timetable.urls')),
 
 
     path('about', views.about, name='about'),

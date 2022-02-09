@@ -1,0 +1,39 @@
+{% extends 'main/visit/templates/baseVisit.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">Назва</th>
+<th scope="col">Школа</th>
+<th scope="col">Графік</th>
+<th scope="col">Тренер</th>
+{% endblock headerTable %}
+
+{% block table %}
+
+<th class="table-light" scope="row">{{one.id}}</th>
+<td><a href="{% url 'group-edit' one.id %}">{{one.name}}</a></td>
+<td>{% if one.school != none %}<a href="{% url 'school-edit' one.school.id %}">{{one.school}}</a>
+  {% else %}{{one.school}}{% endif %}</td>
+
+
+
+
+<td>
+    {% for timetable  in one.timetable_set.all %}
+    <a href="{% url 'timetable-edit' timetable.id %}"> {{timetable}}</a><br>
+     {% endfor %}
+</td>
+
+<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
+  {% else %}{{one.coach}}{% endif %}</td>
+
+
+{% endblock table %}
+
+{% block urledit %}
+{% url 'group-edit' one.id %}
+{% endblock %}
+
+{% block urldelete %}
+{% url 'group-delete' one.id %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'main/visit/templates/baseVisit.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">День</th>
+<th scope="col">Час початку</th>
+<th scope="col">Час завершення</th>
+<th scope="col">Група</th>
+{% endblock headerTable %}
+
+{% block table %}
+
+<th class="table-light" scope="row">{{one.id}}</th>
+<td><a href="{% url 'timetable-edit' one.id %}">{{one.days}}</a></td>
+<td><a href="{% url 'timetable-edit' one.id %}">{{one.timeStart|date:'H:i' }}</a></td>
+<td><a href="{% url 'timetable-edit' one.id %}">{{one.timeFinish|date:'H:i'}}</a></td>
+
+<td>{% if one.group != none %}<a href="{% url 'group-edit' one.group.id %}">{{one.group}}</a>
+  {% else %}{{one.group}}{% endif %}</td>
+
+{% endblock table %}
+
+{% block urledit %}
+{% url 'timetable-edit' one.id %}
+{% endblock %}
+
+{% block urldelete %}
+{% url 'timetable-delete' one.id %}
+{% endblock %}

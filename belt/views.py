@@ -14,26 +14,26 @@ class BeltEditView(UpdateView):
 
 
 def belt(request):
-
+    model = Belt.objects.all()
     error = ''
+    fields = Belt._meta.fields
+    table = Belt._meta.app_label
+
     if request.method == 'POST':
-        form = BeltAddForm(request.POST)
+        form = BeltAddForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('belt')
         else:
             error = 'Введено не коректні дані!'
-
-    belt = Belt.objects.all()
-    form = BeltAddForm()
-    fields = Belt._meta.fields
-    table = Belt._meta.app_label
+    else:
+        form = BeltAddForm()
 
     context = {
         'forms': form,
         'title': Belt._meta.verbose_name,
         'titles': Belt._meta.verbose_name_plural,
-        'data': belt,
+        'data': model,
         'fields': fields,
         'table': table,
         'error': error,

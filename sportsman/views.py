@@ -20,21 +20,21 @@ class SportsmanEditView(UpdateView):
 
 
 def sportsman(request):
+
+    model = Sportsman.objects.all().order_by('coach')
     error = ''
+    fields = Sportsman._meta.fields
+    table = Sportsman._meta.app_label
 
     if request.method == 'POST':
-        form = SportsmanAddForm(request.POST)
+        form = SportsmanAddForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('sportsman')
         else:
             error = 'Введено не коректні дані!'
-
-    model = Sportsman.objects.all()
-
-    form = SportsmanAddForm()
-    fields = Sportsman._meta.fields
-    table = Sportsman._meta.app_label
+    else:
+        form = SportsmanAddForm()
 
     context = {
         'forms': form,
