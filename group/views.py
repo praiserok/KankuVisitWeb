@@ -16,7 +16,7 @@ class GroupEditView(UpdateView):
 
 def group(request):
 
-    model = Group.objects.all().order_by('coach')
+    model = Group.objects.all().order_by('-school')
     error = ''
     fields = Group._meta.fields
     table = Group._meta.app_label

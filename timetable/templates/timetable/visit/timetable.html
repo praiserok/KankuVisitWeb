@@ -11,7 +11,12 @@
 {% block table %}
 
 <th class="table-light" scope="row">{{one.id}}</th>
-<td><a href="{% url 'timetable-edit' one.id %}">{{one.days}}</a></td>
+<td>  
+{% for day in one.days.all %}
+<a href="{% url 'timetable-edit' one.id %}">{{day}}</a><br> 
+{% endfor  %}
+  
+</td>
 <td><a href="{% url 'timetable-edit' one.id %}">{{one.timeStart|date:'H:i' }}</a></td>
 <td><a href="{% url 'timetable-edit' one.id %}">{{one.timeFinish|date:'H:i'}}</a></td>
 

@@ -20,7 +20,7 @@
 <td><a href="{% url 'coach-edit' one.id %}">{{one.last_name}}</a></td>
 <td>{{one.telephone}}</td>
 <td>
-  {% for school  in one.school_set.all %}
+  {% for school in one.school_set.all %}
  <a href="{% url 'school-edit' school.id %}"> {{school}}</a><br>
   {% endfor %}
 </td>

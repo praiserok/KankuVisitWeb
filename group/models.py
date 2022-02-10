@@ -11,6 +11,7 @@ class Group(models.Model):
                                on_delete=models.CASCADE,
                                blank=True,
                                null=True)
+
     coach = models.ForeignKey(Coach,
                               on_delete=models.CASCADE,
                               blank=True,
