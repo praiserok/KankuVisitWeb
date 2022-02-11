@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from belt.models import Belt
-# from main import models as Belt
+from slugify import slugify
 
 
 class Coach(models.Model):
@@ -20,15 +20,23 @@ class Coach(models.Model):
                               null=True)
     information = models.TextField('Інформація про тренера')
     photo = models.ImageField(
-        'Фото', upload_to='coach/photo/%Y/%m/%d/', blank=True)
+        'Фото', upload_to='coach/photo/%Y/%m/', blank=True)
     is_active = models.BooleanField('Тренує?', default=True)
+    slug = models.SlugField(max_length=255, unique=True,
+                            db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.last_name + '-' +
+                            self.first_name)
+        super(Coach, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Тренер'
         verbose_name_plural = 'Тренери'
+        ordering = ['-is_active', 'last_name']
 
     def get_absolute_url(self):
         return reverse('coach')

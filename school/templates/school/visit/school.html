@@ -1,19 +1,25 @@
 {% extends 'main/visit/templates/baseVisit.html' %}
 
-{% comment %} {% block headerTable %}
+{% block headerTable %}
 <th scope="col">#</th>
 <th scope="col">Назва</th>
 <th scope="col">Місто</th>
 <th scope="col">Адрес</th>
+<th scope="col">Групи</th>
 <th scope="col">Тренер</th>
 <th scope="col">Працює?</th>
-{% endblock headerTable %} {% endcomment %}
+{% endblock headerTable %}
 
 {% block table %}
 <th class="table-light" scope="row">{{one.id}}</th>
 <td><a href="{% url 'school-edit' one.id %}">{{one.name}}</a></td>
 <td>{{one.city}}</td>
 <td>{{one.adress}}</td>
+<td>
+  {% for group in one.group_set.all %}
+ <a href="{% url 'group-edit' group.id %}"> {{group}}</a><br>
+  {% endfor %}
+</td>
 <td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
   {% else %}{{one.coach}}{% endif %}</td>
 <td>
@@ -27,9 +33,9 @@
 
 
 {% block urledit %}
-{% url 'school-edit' one.id %}
+{% url 'school-edit' one.slug %}
 {% endblock %}
 
 {% block urldelete %}
-{% url 'school-delete' one.id %}
+{% url 'school-delete' one.slug %}
 {% endblock %}

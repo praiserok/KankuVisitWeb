@@ -14,7 +14,7 @@ class CoachEditView(UpdateView):
 
 
 def coach(request):
-    model = Coach.objects.all().order_by('-belts')
+    model = Coach.objects.all()
     error = ''
     fields = Coach._meta.fields
     table = Coach._meta.app_label
@@ -43,8 +43,8 @@ def coach(request):
     return render(request, 'coach/visit/coach.html', context)
 
 
-def coachDelete(request, pk):
-    item = Coach.objects.get(pk=pk)
+def coachDelete(request, slug):
+    item = Coach.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

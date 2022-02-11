@@ -7,8 +7,8 @@ class SchoolAddForm(ModelForm):
 
     class Meta:
         model = School
-        fields = '__all__'
-        # exclude = ['is_active']
+        # fields = '__all__'
+        exclude = ['slug']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть назва'}),
             'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть місто'}),

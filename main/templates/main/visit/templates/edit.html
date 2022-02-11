@@ -38,6 +38,8 @@
         placeholder="Тренується" {% if f.value == True %} checked {% endif %}>
       <p>Активний?</p>
     </div>
+    {% elif f.html_name == 'photo' and f.value %}
+    <img src="{{f.value.url}}" alt="">
 
     {% else %}
     {{f}}

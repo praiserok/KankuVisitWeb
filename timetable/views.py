@@ -45,9 +45,9 @@ def timetable(request):
     return render(request, 'timetable/visit/timetable.html', context)
 
 
-def timetableDelete(request, pk):
+def timetableDelete(request, slug):
 
-    item = Timetable.objects.get(pk=pk)
+    item = Timetable.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

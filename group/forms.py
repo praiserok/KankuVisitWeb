@@ -6,7 +6,8 @@ from group.models import Group
 class GroupAddForm(ModelForm):
     class Meta:
         model = Group
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['slug']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть назву'}),
             'coach': Select(attrs={'class': 'form-select '}),

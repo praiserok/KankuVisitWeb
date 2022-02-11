@@ -134,5 +134,6 @@ STATICFILES_DIRS = [
     '/home/c/co00847/newsite/public_html/static',
 ]
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

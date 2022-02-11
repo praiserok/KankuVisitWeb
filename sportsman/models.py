@@ -3,6 +3,7 @@ from django.urls import reverse
 from belt.models import Belt
 from coach.models import Coach
 from group.models import Group
+from slugify import slugify
 
 
 class Sportsman(models.Model):
@@ -24,13 +25,21 @@ class Sportsman(models.Model):
                               blank=True,
                               null=True)
     is_active = models.BooleanField('Тренується?', default=True)
+    slug = models.SlugField(max_length=255, unique=True,
+                            db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.last_name + '-' +
+                            self.first_name + '-' + self.surname)
+        super(Sportsman, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Спортсмен'
         verbose_name_plural = 'Спортсмени'
+        ordering = ['-is_active', 'coach', 'last_name']
 
     def get_absolute_url(self):
         return reverse('sportsman')

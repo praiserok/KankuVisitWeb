@@ -45,9 +45,9 @@ def group(request):
     return render(request, 'group/visit/group.html', context)
 
 
-def groupDelete(request, pk):
+def groupDelete(request, slug):
 
-    item = Group.objects.get(pk=pk)
+    item = Group.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

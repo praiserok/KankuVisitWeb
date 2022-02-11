@@ -50,9 +50,9 @@ def school(request):
     return render(request, 'school/visit/school.html', context)
 
 
-def schoolDelete(request, pk):
+def schoolDelete(request, slug):
 
-    item = School.objects.get(pk=pk)
+    item = School.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

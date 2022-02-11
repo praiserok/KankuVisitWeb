@@ -21,7 +21,7 @@ class SportsmanEditView(UpdateView):
 
 def sportsman(request):
 
-    model = Sportsman.objects.all().order_by('coach')
+    model = Sportsman.objects.all()
     error = ''
     fields = Sportsman._meta.fields
     table = Sportsman._meta.app_label
@@ -50,8 +50,8 @@ def sportsman(request):
     return render(request, 'sportsman/visit/sportsman.html', context)
 
 
-def sportsmanDelete(request, pk):
-    item = Sportsman.objects.get(pk=pk)
+def sportsmanDelete(request, slug):
+    item = Sportsman.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

@@ -7,7 +7,8 @@ from .models import Timetable
 class TimetableAddForm(ModelForm):
     class Meta:
         model = Timetable
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['slug']
         widgets = {
             'days': CheckboxSelectMultiple(attrs={'class': ''}),
             'timeStart': TimeInput(attrs={'type': 'time', 'class': 'form-control'}),

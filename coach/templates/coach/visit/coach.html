@@ -39,9 +39,9 @@
 {% endblock table %}
 
 {% block urledit %}
-{% url 'coach-edit' one.id %}
+{% url 'coach-edit' one.slug %}
 {% endblock %}
 
 {% block urldelete %}
-{% url 'coach-delete' one.id %}
+{% url 'coach-delete' one.slug %}
 {% endblock %}

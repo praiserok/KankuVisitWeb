@@ -17,10 +17,7 @@
 
 
 <td>
-  
-  <!-- {{one.timetable_set.all}} -->
      {% for timetable  in one.timetable_set.all %}
-     
             {%for day in timetable.days.all%}
             <a href="{% url 'timetable-edit' timetable.id %}">{{day}} {{timetable.timeStart|date:'H:i'}}-{{timetable.timeFinish|date:'H:i'}}</a><br>
             {%endfor%}
@@ -35,9 +32,9 @@
 {% endblock table %}
 
 {% block urledit %}
-{% url 'group-edit' one.id %}
+{% url 'group-edit' one.slug %}
 {% endblock %}
 
 {% block urldelete %}
-{% url 'group-delete' one.id %}
+{% url 'group-delete' one.slug %}
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from coach.models import Coach
+from slugify import slugify
 
 
 class School(models.Model):
@@ -12,9 +13,16 @@ class School(models.Model):
                               blank=True,
                               null=True)
     is_active = models.BooleanField('Працює?', default=True)
+    slug = models.SlugField(max_length=255, unique=True,
+                            db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name + '-' +
+                            self.adress)
+        super(School, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Школа'

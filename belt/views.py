@@ -43,9 +43,9 @@ def belt(request):
     return render(request, 'belt/visit/belt.html', context)
 
 
-def beltDelete(request, pk):
+def beltDelete(request, slug):
 
-    item = Belt.objects.get(pk=pk)
+    item = Belt.objects.get(slug=slug)
     item.delete()
 
     return redirect(request.META['HTTP_REFERER'])

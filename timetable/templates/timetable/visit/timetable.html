@@ -26,9 +26,9 @@
 {% endblock table %}
 
 {% block urledit %}
-{% url 'timetable-edit' one.id %}
+{% url 'timetable-edit' one.slug %}
 {% endblock %}
 
 {% block urldelete %}
-{% url 'timetable-delete' one.id %}
+{% url 'timetable-delete' one.slug %}
 {% endblock %}

@@ -11,12 +11,12 @@ class SportsmanAddForm(ModelForm):
 
     class Meta:
         model = Sportsman
-        fields = '__all__'
+        # fields = '__all__'
         # ['first_name', 'last_name', 'surname', 'dateBirth',
         #           'telephone', 'belts', 'group', 'coach', 'is_active']
         # '__all__'
 
-        # exclude = ['is_active']
+        exclude = ['slug']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть ім\'я'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть прізвище'}),
