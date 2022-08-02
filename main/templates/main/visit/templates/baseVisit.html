@@ -40,19 +40,6 @@
         <li class="nav-item">
           <a class="nav-link {{ activeTimetable }}" href="{% url 'timetable' %}">Графік</a>
         </li>
-
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li> -->
-
-        <!-- <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-          <ul class="dropdown-menu" aria-labelledby="dropdown03">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li> -->
       </ul>
     </div>
 
@@ -72,14 +59,6 @@
 <div class="d-flex mb-2">
   <h1 class="me-auto">{{ titles }}</h1>
 
-
-  <div class="alert-danger">
-    <span>{{ error }}</span>
-    <div>{{forms.errors}}</div>
-
-
-  </div>
-
   {% if title %}
   <button type="button" class="btn btn-outline-danger d-sm-none" data-bs-toggle="modal" data-bs-target="#modalAdd">
     Додати {{ title }}
@@ -98,7 +77,12 @@
 
         {% for field in fields %}
 
+        {% if field.verbose_name == 'URL' %}
+
+        {%else%}
         <th scope="col">{{field.verbose_name}}</th>
+        {% endif %}
+
         {% endfor %}
 
         {% endblock headerTable %}
@@ -108,6 +92,7 @@
     </thead>
 
     <tbody>
+      {% if data %}
 
       {% for one in data %}
       <tr>
@@ -150,13 +135,37 @@
         </td>
         <!--Кнопки редагування-->
       </tr>
+
       {% endfor %}
+
+      {%else%}
+      <div class='alert alert-danger'>Не має добавлених <span class='alert-success'>{{ title }}</span>! Шаблон цієї
+        сторінки: <span class='alert-success'>{{table}}<span>
+      </div>
+      {% endif %}
     </tbody>
 
   </table>
-</div>
 
-<!-- Modal Add -->
+  <div class="pagination">
+    <span class="step-links">
+      {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; перша | </a>
+      <a href="?page={{ page_obj.previous_page_number }}">попередня | </a>
+      {% endif %}
+
+      <span class="current">
+        Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}. |
+      </span>
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">наступна | </a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">остання | &raquo;</a>
+      {% endif %}
+    </span>
+  </div>
+
+</div>
 
 <!-- Modal Add -->
 <div class="modal fade" id="modalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -172,7 +181,7 @@
 
           {% block formsadd %}
 
-          {% for f in forms %}
+          {% for f in form %}
 
           <div class="form-floating col-md-6" bis_skin_checked="1">
 

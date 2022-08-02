@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import CoachAddForm
 from .models import Coach
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView, FormView
+from django.urls import reverse_lazy
 
 
 class CoachEditView(UpdateView):
@@ -13,34 +14,26 @@ class CoachEditView(UpdateView):
     }
 
 
-def coach(request):
-    model = Coach.objects.all()
-    error = ''
-    fields = Coach._meta.fields
-    table = Coach._meta.app_label
+class CoachView(ListView, FormView):
+    model = Coach
+    form_class = CoachAddForm
+    template_name = 'coach/visit/coach.html'
+    success_url = reverse_lazy('coach')
+    context_object_name = 'data'
+    paginate_by = 25
 
-    if request.method == 'POST':
-        form = CoachAddForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('coach')
-        else:
-            error = 'Введено не коректні дані:'
-    else:
-        form = CoachAddForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fields'] = Coach._meta.fields
+        context['table'] = Coach._meta.app_label
+        context['activeCoach'] = 'active'
+        context['title'] = Coach._meta.verbose_name
+        context['titles'] = Coach._meta.verbose_name_plural
+        return context
 
-    context = {
-        'forms': form,
-        'title': Coach._meta.verbose_name,
-        'titles': Coach._meta.verbose_name_plural,
-        'data': model,
-        'fields': fields,
-        'error': error,
-        'table': table,
-        'activeCoach': 'active'
-    }
-
-    return render(request, 'coach/visit/coach.html', context)
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 def coachDelete(request, slug):

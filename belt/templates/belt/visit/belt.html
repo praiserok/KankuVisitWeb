@@ -11,9 +11,9 @@
 
 {% block table %}
 <th class="table-light" scope="row">{{one.id}}</th>
-<td><a href="{% url 'belt-edit' one.id %}">{{one.name}}</a></td>
-<td><a href="{% url 'belt-edit' one.id %}">{{one.fullname}}</a></td>
-<td><a href="{% url 'belt-edit' one.id %}">{{one.number}}</a></td>
+<td><a href="{% url 'belt-edit' one.slug %}">{{one.name}}</a></td>
+<td><a href="{% url 'belt-edit' one.slug %}">{{one.fullname}}</a></td>
+<td><a href="{% url 'belt-edit' one.slug %}">{{one.number}}</a></td>
 <!-- <td>{{one.img}}</td> -->
 {% endblock table %}
 

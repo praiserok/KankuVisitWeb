@@ -4,14 +4,15 @@ from belt.models import Belt
 from coach.models import Coach
 from group.models import Group
 from slugify import slugify
+# import slugify
 
 
 class Sportsman(models.Model):
     first_name = models.CharField('Імя', max_length=20)
     surname = models.CharField('По батькові', max_length=20, blank=True)
     last_name = models.CharField('Прізвище', max_length=25)
-    dateBirth = models.DateField('Дата народження')
-    telephone = models.IntegerField('Номер телефону')
+    dateBirth = models.DateField('Дата народження', blank=True, null=True)
+    # telephone = models.IntegerField('Номер телефону', blank=True)
     belts = models.ForeignKey(Belt,
                               on_delete=models.SET_NULL,
                               blank=True,
@@ -44,3 +45,4 @@ class Sportsman(models.Model):
     def get_absolute_url(self):
         return reverse('sportsman')
         # reverse("sportsman-edit", kwargs={"pk": self.pk})
+        # reverse("sportsman-edit", kwargs={"slug": self.slug})

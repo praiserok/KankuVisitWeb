@@ -12,15 +12,15 @@
 
 {% block table %}
 <th class="table-light" scope="row">{{one.id}}</th>
-<td><a href="{% url 'school-edit' one.id %}">{{one.name}}</a></td>
+<td><a href="{% url 'school-edit' one.slug %}">{{one.name}}</a></td>
 <td>{{one.city}}</td>
 <td>{{one.adress}}</td>
 <td>
   {% for group in one.group_set.all %}
- <a href="{% url 'group-edit' group.id %}"> {{group}}</a><br>
+  <a href="{% url 'group-edit' group.slug %}"> {{group}}</a><br>
   {% endfor %}
 </td>
-<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
+<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.slug %}">{{one.coach}}</a>
   {% else %}{{one.coach}}{% endif %}</td>
 <td>
   <div class="form-check form-switch">

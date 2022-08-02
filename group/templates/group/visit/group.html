@@ -11,21 +11,22 @@
 {% block table %}
 
 <th class="table-light" scope="row">{{one.id}}</th>
-<td><a href="{% url 'group-edit' one.id %}">{{one.name}}</a></td>
-<td>{% if one.school != none %}<a href="{% url 'school-edit' one.school.id %}">{{one.school}}</a>
+<td><a href="{% url 'group-edit' one.slug %}">{{one.name}}</a></td>
+<td>{% if one.school != none %}<a href="{% url 'school-edit' one.school.slug %}">{{one.school}}</a>
   {% else %}{{one.school}}{% endif %}</td>
 
 
 <td>
-     {% for timetable  in one.timetable_set.all %}
-            {%for day in timetable.days.all%}
-            <a href="{% url 'timetable-edit' timetable.id %}">{{day}} {{timetable.timeStart|date:'H:i'}}-{{timetable.timeFinish|date:'H:i'}}</a><br>
-            {%endfor%}
-     
-     {% endfor %}
+  {% for timetable  in one.timetable_set.all %}
+  {%for day in timetable.days.all%}
+  <a href="{% url 'timetable-edit' timetable.id %}">{{day}}
+    {{timetable.timeStart|date:'H:i'}}-{{timetable.timeFinish|date:'H:i'}}</a><br>
+  {%endfor%}
+
+  {% endfor %}
 </td>
 
-<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.id %}">{{one.coach}}</a>
+<td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.slug %}">{{one.coach}}</a>
   {% else %}{{one.coach}}{% endif %}</td>
 
 

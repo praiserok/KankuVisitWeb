@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # debug
+    "debug_toolbar",
     'belt.apps.BeltConfig',
     'main.apps.MainConfig',
     'coach.apps.CoachConfig',
@@ -53,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # debug
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'kankuvisit.urls'
@@ -130,10 +134,14 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = '/home/c/co00847/newsite/public_html/static'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    '/home/c/co00847/newsite/public_html/static',
+    os.path.join(BASE_DIR, "main/static"),
 ]
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# DEBUG
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

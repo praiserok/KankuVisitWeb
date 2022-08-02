@@ -2,7 +2,6 @@ from belt.models import Belt
 from coach.models import Coach
 from group.models import Group
 from .models import Sportsman
-from django import forms
 from django.forms import (ModelForm, TextInput, EmailInput,
                           DateInput, NumberInput, Select)
 
@@ -17,6 +16,7 @@ class SportsmanAddForm(ModelForm):
         # '__all__'
 
         exclude = ['slug']
+
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть ім\'я'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть прізвище'}),

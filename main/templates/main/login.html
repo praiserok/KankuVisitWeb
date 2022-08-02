@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %} {% block title %} {{ title }} {% endblock %}
+{%block content%}
+
+<h1>{{title}}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="alert-danger">{{ form.non_field_errors }}</div>
+  {% for f in form %}
+
+  <div class="mb-3">
+    <label for="{{ f.id_for_label }}" class="form-label">{{f.label}}:</label>
+    {{f}}
+    <div class="form-text">{{ f.errors }}</div>
+  </div>
+  {% endfor %}
+  <!-- {{ form.as_p }} -->
+  <button type="submit" class="btn btn-primary">Увійти</button>
+</form>
+
+{% endblock content %}

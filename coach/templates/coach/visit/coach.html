@@ -7,7 +7,6 @@
 <th scope="col">Телефон</th>
 <th scope="col">Школа</th>
 <th scope="col">Email</th>
-<th scope="col">Номер</th>
 <th scope="col">Пояс</th>
 <th scope="col">Інформація</th>
 <th scope="col">Тренує?</th>
@@ -16,17 +15,16 @@
 {% block table %}
 
 <th class="table-light" scope="row">{{one.id}}</th>
-<td><a href="{% url 'coach-edit' one.id %}">{{one.first_name}}</a></td>
-<td><a href="{% url 'coach-edit' one.id %}">{{one.last_name}}</a></td>
+<td><a href="{% url 'coach-edit' one.slug %}">{{one.first_name}}</a></td>
+<td><a href="{% url 'coach-edit' one.slug %}">{{one.last_name}}</a></td>
 <td>{{one.telephone}}</td>
 <td>
   {% for school in one.school_set.all %}
- <a href="{% url 'school-edit' school.id %}"> {{school}}</a><br>
+  <a href="{% url 'school-edit' school.slug %}"> {{school}}</a><br>
   {% endfor %}
 </td>
 <td>{{one.email}}</td>
-<td>{{one.telephone}}</td>
-<td>{% if one.belts != none %}<a href="{% url 'belt-edit' one.belts.id %}">{{one.belts}}</a>
+<td>{% if one.belts != none %}<a href="{% url 'belt-edit' one.belts.slug %}">{{one.belts}}</a>
   {% else %}{{one.belts}}{% endif %}</td>
 <td>{{one.information}}</td>
 <td>
