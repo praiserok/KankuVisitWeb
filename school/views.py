@@ -3,7 +3,8 @@ from pyexpat import model
 from django.shortcuts import render, redirect
 from school.models import School
 from .forms import SchoolAddForm
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView, FormView
+from django.urls import reverse_lazy
 
 
 class SchoolEditView(UpdateView):
@@ -15,39 +16,27 @@ class SchoolEditView(UpdateView):
     }
 
 
-def school(request):
-    error = ''
-    model = School.objects.all().order_by('coach')
-    fields = School._meta.fields
-    table = School._meta.app_label
+class SchoolView(ListView, FormView):
+    model = School
+    form_class = SchoolAddForm
+    template_name = 'school/visit/school.html'
+    success_url = reverse_lazy('school')
+    context_object_name = 'data'
+    paginate_by = 25  # if pagination is desired
 
-    if request.method == 'POST':
-        form = SchoolAddForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('school')
-        else:
-            error = 'Введено не коректні дані!'
-    else:
-        form = SchoolAddForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fields'] = School._meta.fields
+        context['table'] = School._meta.app_label
+        context['activeSchool'] = 'active'
+        context['title'] = School._meta.verbose_name
+        context['titles'] = School._meta.verbose_name_plural
 
-    # fields = School._meta.get_field('name')
-    # print(School._meta.app_label) Таблиця назва
-    # print(School._meta.label) Таблиця назва
-    # values = School.objects.values()
+        return context
 
-    context = {
-        'forms': form,
-        'title': School._meta.verbose_name,
-        'titles': School._meta.verbose_name_plural,
-        'data': model,
-        'fields': fields,
-        'table': table,
-        'error': error,
-        'activeSchool': 'active'
-    }
-
-    return render(request, 'school/visit/school.html', context)
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
 
 def schoolDelete(request, slug):

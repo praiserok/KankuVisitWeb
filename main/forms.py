@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from coach.models import Coach
+
 # Форма для реєстрації користувачів
 
 
@@ -20,11 +22,19 @@ class RegisterUserForm(UserCreationForm):
         attrs={'class': 'form-control', 'placeholder': "Ім'я"}))
     last_name = forms.CharField(label="Ваша фамілія", widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': "Фамілія"}))
+    surname = forms.CharField(label="Побатькові", widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': "Побатькові"}))
+    dataBirth = forms.DateField(label="Дата народження", widget=forms.DateInput(
+        attrs={'class': 'form-control', 'type': 'date'}))
+    telephone = forms.IntegerField(label="Номер телефону", widget=forms.NumberInput(
+        attrs={'class': 'form-control', 'placeholder': 'Введіть номер телефону: 380681111111'}))
+    # telephone2 = forms.IntegerField(label="Номер телефону 2", widget=forms.NumberInput(
+    #     attrs={'class': 'form-control', 'placeholder': 'Введіть номер телефону 2'}))
 
     class Meta:
-        model = User
+        model = Coach
         fields = ('username', 'email', 'password1',
-                  'password2', 'first_name', 'last_name')
+                  'password2', 'first_name', 'last_name', 'surname', 'dataBirth', 'telephone')
 
 
 class LoginUserForm(AuthenticationForm):

@@ -41,21 +41,7 @@ class RegisterUser(CreateView):
     }
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-        coach = CoachAddForm().save(commit=False)
-
-        coach.first_name = user.first_name
-        coach.last_name = user.last_name
-        coach.email = user.email
-        coach.dateBirth = date(1995, 12, 1)
-        coach.telephone = '+380671111111'
-
-        user.save()
-
-        coach.slug = slugify(user.last_name + '-' + user.first_name)
-
-        coach.save()
-
+        user = form.save()
         login(self.request, user)
         return redirect('coach')
 
