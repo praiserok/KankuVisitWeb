@@ -1,28 +1,51 @@
+import re
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+import coach
 from sportsman.forms import SportsmanAddForm
-from sportsman.models import Sportsman
-from django.views.generic import DetailView, ListView, UpdateView, FormView
+from sportsman.models import Sportsman, Coach
+from django.views.generic import DetailView, ListView, UpdateView, FormView, CreateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 
-# class SportsmanEditView(DetailView):
-#     model = Sportsman
-#     template_name = 'sportsman/visit/sportsmenan_view.html'
-#     context_object_name = 'Sportsman'
+class CustomSuccessMessageMixin:
+    @property
+    def success_msg(self):
+        return False
 
-class SportsmanEditView(UpdateView):
+    def form_valid(self, form):
+        messages.success(self.request, self.success_msg)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return '%s?slug=%s' % (self.success_url, self.object.slug)
+
+
+class SportsmanEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
     model = Sportsman
     template_name = 'sportsman/visit/sportsmanedit.html'
     form_class = SportsmanAddForm
+    success_msg = 'Дані ' + Sportsman._meta.verbose_name + 'а обновлено успішно!'
+    success_url = reverse_lazy('sportsman')
     extra_context = {
         'activeSportsman': 'active'
     }
+#  Функція що заюороняє редагувати якщо ти не створював
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if self.request.user != kwargs['instance'].coach:
+            return self.handle_no_permission()
+        return kwargs
 
 
-class SportsmanView(ListView, FormView):
+class SportsmanView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, ListView):
     model = Sportsman
     form_class = SportsmanAddForm
     template_name = 'sportsman/visit/sportsman.html'
+    success_msg = Sportsman._meta.verbose_name + 'а - добавлено успішно!'
     success_url = reverse_lazy('sportsman')
     context_object_name = 'data'
     paginate_by = 25  # if pagination is desired
@@ -34,47 +57,37 @@ class SportsmanView(ListView, FormView):
         context['activeSportsman'] = 'active'
         context['title'] = Sportsman._meta.verbose_name
         context['titles'] = Sportsman._meta.verbose_name_plural
-
         return context
 
     def form_valid(self, form):
-        form.save()
+        self.object = form.save(commit=False)
+        self.object.coach = self.request.user
+        self.object.save()
         return super().form_valid(form)
 
+    # фільтр що відображати
 
-# def sportsman(request):
-
-#     model = Sportsman.objects.all()
-#     error = ''
-#     fields = Sportsman._meta.fields
-#     table = Sportsman._meta.app_label
-
-#     if request.method == 'POST':
-#         form = SportsmanAddForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('sportsman')
-#         else:
-#             error = 'Введено не коректні дані!'
-#     else:
-#         form = SportsmanAddForm()
-
-#     context = {
-#         'forms': form,
-#         'title': Sportsman._meta.verbose_name,
-#         'titles': Sportsman._meta.verbose_name_plural,
-#         'data': model,
-#         'fields': fields,
-#         'table': table,
-#         'error': error,
-#         'activeSportsman': 'active',
-#     }
-
-#     return render(request, 'sportsman/visit/sportsman.html', context)
+    # def get_queryset(self):
+    #     return Sportsman.objects.filter(coach=self.request.user)
 
 
-def sportsmanDelete(request, slug):
-    item = Sportsman.objects.get(slug=slug)
-    item.delete()
+class sportsmanDeleteView(LoginRequiredMixin, DeleteView):
+    model = Sportsman
+    template_name = 'sportsman/visit/sportsman.html'
+    success_url = reverse_lazy('sportsman')
+    success_msg = Sportsman._meta.verbose_name + 'а - видалено!'
 
-    return redirect(request.META['HTTP_REFERER'])
+    def post(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_msg)
+        return super().post(request)
+
+#  Функція що заюороняє видалити якщо ти не створював
+
+    def form_valid(self, form):
+        self.object = self.get_object()
+
+        if self.request.user != self.object.coach:
+            return self.handle_no_permission()
+        success_url = self.get_success_url()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)

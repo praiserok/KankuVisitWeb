@@ -64,11 +64,22 @@
     Додати {{ title }}
   </button>
   {% endif %}
-
 </div>
+
+<!-- Повідомлення про дію -->
+{% if messages %}
+<div class="alert alert-success text-center ">
+  {% for m in messages %}
+  {{m}}
+  {% endfor %}
+</div>
+{% endif %}
+<!-- Повідомлення про дію -->
 
 <div class="table-responsive">
   <table class="table table-hover table-sm">
+
+    <!-- шапка таблиці з даними -->
 
     <thead class="table-dark">
       <tr>
@@ -91,12 +102,14 @@
       </tr>
     </thead>
 
+    <!-- шапка таблиці з даними -->
+
+    <!-- тіло таблиці з даними -->
     <tbody>
       {% if data %}
 
       {% for one in data %}
-      <tr>
-
+      <tr {% if one.slug == request.GET.slug %}class="table-active" {% endif %}>
         {% block table %}
         <td>
           <div class='alert-danger'>Не створено шаблону для
@@ -121,8 +134,18 @@
               </svg>
             </a>
 
-            <a href="{% block urldelete %}{% endblock %}" class="btn btn-danger btn-sm" tabindex="-1" role="button"
-              aria-disabled="true">
+            <form id='delete_form{{one.id}}' action="{% block urldelete %}{% endblock %}" method="post">{% csrf_token %}
+            </form>
+            <a href="javascript:void()" onclick='delete_question{{one.id}}()' class="btn btn-danger btn-sm" tabindex="-1"
+              role="button" aria-disabled="true">
+              <script>
+                function delete_question{{one.id}}() {
+                  if (confirm('Ви впевнені що хочете видалити {{one.first_name}} {{one.last_name}}?')) {
+                    document.getElementById('delete_form{{one.id}}').submit()
+                  }
+                }
+              </script>
+
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -133,7 +156,9 @@
             </a>
           </div>
         </td>
+
         <!--Кнопки редагування-->
+
       </tr>
 
       {% endfor %}
@@ -144,6 +169,8 @@
       </div>
       {% endif %}
     </tbody>
+
+    <!-- тіло таблиці з даними -->
 
   </table>
 
