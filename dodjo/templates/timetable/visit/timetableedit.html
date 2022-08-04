@@ -1,0 +1,32 @@
+{% extends 'main/visit/templates/edit.html' %}
+
+{% block inputedit %}
+<div class="d-flex justify-content-around pt-3">
+  <div>
+    {% for f in form %}
+    {% if f.html_name == 'days' %}
+    {% for i in f %}
+    <div class="form-check form-switch col">
+      {{i}}
+    </div>
+    {%endfor%}
+    {%endif%}
+    {%endfor%}
+  </div>
+  <div>
+    {% for f in form %}
+    {% if f.html_name != 'days' %}
+    <div class="form-floating col" bis_skin_checked="1">
+      {{f}}
+      <label for="{{f.id_for_label}}">{{f.label}}</label>
+      <div id="emailHelp" class="form-text">{{f.help_text}}</div>
+    </div>
+    {%endif%}
+    {%endfor%}
+  </div>
+</div>
+{%endblock%}
+
+{% block backurl %}
+{%url 'timetable'%}
+{% endblock %}

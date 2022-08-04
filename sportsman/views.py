@@ -1,26 +1,11 @@
-import re
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-import coach
 from sportsman.forms import SportsmanAddForm
-from sportsman.models import Sportsman, Coach
-from django.views.generic import DetailView, ListView, UpdateView, FormView, CreateView, DeleteView
+from sportsman.models import Sportsman
+from django.http import HttpResponseRedirect
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from additional.add import CustomSuccessMessageMixin
 from django.contrib import messages
-
-
-class CustomSuccessMessageMixin:
-    @property
-    def success_msg(self):
-        return False
-
-    def form_valid(self, form):
-        messages.success(self.request, self.success_msg)
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return '%s?slug=%s' % (self.success_url, self.object.slug)
 
 
 class SportsmanEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
@@ -29,9 +14,12 @@ class SportsmanEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateVie
     form_class = SportsmanAddForm
     success_msg = 'Дані ' + Sportsman._meta.verbose_name + 'а обновлено успішно!'
     success_url = reverse_lazy('sportsman')
-    extra_context = {
-        'activeSportsman': 'active'
-    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['activeSportsman'] = 'active'
+        return context
+
 #  Функція що заюороняє редагувати якщо ти не створював
 
     def get_form_kwargs(self):
@@ -67,11 +55,11 @@ class SportsmanView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, L
 
     # фільтр що відображати
 
-    # def get_queryset(self):
-    #     return Sportsman.objects.filter(coach=self.request.user)
+    def get_queryset(self):
+        return Sportsman.objects.filter(coach=self.request.user)
 
 
-class sportsmanDeleteView(LoginRequiredMixin, DeleteView):
+class sportsmanDeleteView(LoginRequiredMixin, CustomSuccessMessageMixin, DeleteView):
     model = Sportsman
     template_name = 'sportsman/visit/sportsman.html'
     success_url = reverse_lazy('sportsman')
@@ -81,7 +69,7 @@ class sportsmanDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(self.request, self.success_msg)
         return super().post(request)
 
-#  Функція що заюороняє видалити якщо ти не створював
+#  Функція що забороняє видалити якщо ти не створював
 
     def form_valid(self, form):
         self.object = self.get_object()

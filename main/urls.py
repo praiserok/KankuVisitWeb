@@ -5,10 +5,10 @@ urlpatterns = [
     path('', views.indexVisit, name='visit'),
     path('coach/', include('coach.urls')),
     path('sportsman/', include('sportsman.urls')),
-    path('school/', include('school.urls')),
+    path('dodjo/', include('dodjo.urls')),
     path('belt/', include('belt.urls')),
-    path('group/', include('group.urls')),
-    path('timetable/', include('timetable.urls')),
+    # path('group/', include('group.urls')),
+    # path('timetable/', include('timetable.urls')),
 
 
     path('login/', views.LoginUser.as_view(), name='login'),

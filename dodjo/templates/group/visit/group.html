@@ -1,0 +1,45 @@
+{% extends 'main/visit/templates/baseVisit.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">Назва</th>
+<th scope="col">Школа</th>
+<th scope="col">Графік</th>
+{% comment %} <th scope="col">Тренер</th> {% endcomment %}
+<th scope="col">Вартість у місяць</th>
+<th scope="col">Вартість 1-го тренування</th>
+{% endblock headerTable %}
+
+{% block table %}
+
+<th class="table-light" scope="row">{{one.id}}</th>
+<td><a href="{% url 'group-edit' one.slug %}">{{one.name}}</a></td>
+<td>{% if one.school != none %}<a href="{% url 'school-edit' one.school.slug %}">{{one.school}}</a>
+  {% else %}{{one.school}}{% endif %}</td>
+
+
+<td>
+  {% for timetable  in one.timetable_set.all %}
+  {%for day in timetable.days.all%}
+  <a href="{% url 'timetable-edit' timetable.id %}">{{day}}
+    {{timetable.timeStart|date:'H:i'}}-{{timetable.timeFinish|date:'H:i'}}</a><br>
+  {%endfor%}
+
+  {% endfor %}
+</td>
+
+<!-- <td>{% if one.coach != none %}<a href="{% url 'coach-edit' one.coach.slug %}">{{one.coach}}</a>
+  {% else %}{{one.coach}}{% endif %}</td> -->
+
+<td>{{one.costMoon}} грн.</td>
+<td>{{one.costTraining}} грн.</td>
+
+{% endblock table %}
+
+{% block urledit %}
+{% url 'group-edit' one.slug %}
+{% endblock %}
+
+{% block urldelete %}
+{% url 'group-delete' one.slug %}
+{% endblock %}

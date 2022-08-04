@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'coach.apps.CoachConfig',
     'sportsman.apps.SportsmanConfig',
-    'school.apps.SchoolConfig',
-    'group.apps.GroupConfig',
-    'timetable.apps.TimetableConfig',
+    'dodjo.apps.DodjoConfig',
+    # 'group.apps.GroupConfig',
+    # 'timetable.apps.TimetableConfig',
 
 ]
 

@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from belt.models import Belt
 from coach.models import Coach
-from group.models import Group
+from dodjo.models import Group
 from slugify import slugify
 # import slugify
 

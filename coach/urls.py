@@ -6,5 +6,5 @@ urlpatterns = [
     path('<slug:slug>/edit',
          views.CoachEditView.as_view(), name='coach-edit'),
     path('<slug:slug>/delete',
-         views.coachDelete, name='coach-delete'),
+         views.coachDeleteView.as_view(), name='coach-delete'),
 ]

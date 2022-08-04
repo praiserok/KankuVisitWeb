@@ -1,6 +1,3 @@
-from belt.models import Belt
-from coach.models import Coach
-from group.models import Group
 from .models import Sportsman
 from django.forms import (ModelForm, TextInput, EmailInput,
                           DateInput, NumberInput, Select)

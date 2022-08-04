@@ -1,5 +1,3 @@
-from dataclasses import field, fields
-from django import forms
 from .models import Coach
 from django.forms import (CheckboxInput, ModelForm, TextInput, Textarea, EmailInput,
                           PasswordInput, DateInput, NumberInput, URLInput,

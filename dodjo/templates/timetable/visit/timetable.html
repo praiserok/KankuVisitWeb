@@ -1,0 +1,61 @@
+{% extends 'main/visit/templates/baseVisit.html' %}
+
+{% block headerTable %}
+<th scope="col">#</th>
+<th scope="col">День</th>
+<th scope="col">Час початку</th>
+<th scope="col">Час завершення</th>
+<th scope="col">Група</th>
+{% endblock headerTable %}
+
+{% block table %}
+
+<th class="table-light" scope="row">{{one.id}}</th>
+<td>
+  {% for day in one.days.all %}
+  <a href="{% url 'timetable-edit' one.slug %}">{{day}}</a><br>
+  {% endfor  %}
+
+</td>
+<td><a href="{% url 'timetable-edit' one.slug %}">{{one.timeStart|date:'H:i' }}</a></td>
+<td><a href="{% url 'timetable-edit' one.slug %}">{{one.timeFinish|date:'H:i'}}</a></td>
+
+<td>{% if one.group != none %}<a href="{% url 'group-edit' one.group.slug %}">{{one.group}}</a>
+  {% else %}{{one.group}}{% endif %}</td>
+
+{% endblock table %}
+
+{% block formsadd %}
+<div class="d-flex justify-content-around">
+  <div>
+    {% for f in form %}
+    {% if f.html_name == 'days' %}
+    {% for i in f %}
+    <div class="form-check form-switch col">
+      {{i}}
+    </div>
+    {%endfor%}
+    {%endif%}
+    {%endfor%}
+  </div>
+  <div>
+    {% for f in form %}
+    {% if f.html_name != 'days' %}
+    <div class="form-floating col" bis_skin_checked="1">
+      {{f}}
+      <label for="{{f.id_for_label}}">{{f.label}}</label>
+      <div id="emailHelp" class="form-text">{{f.help_text}}</div>
+    </div>
+    {%endif%}
+    {%endfor%}
+  </div>
+</div>
+{% endblock formsadd %}
+
+{% block urledit %}
+{% url 'timetable-edit' one.slug %}
+{% endblock %}
+
+{% block urldelete %}
+{% url 'timetable-delete' one.slug %}
+{% endblock %}

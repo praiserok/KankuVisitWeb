@@ -22,15 +22,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link {{ activeSportsman }}" href="{% url 'sportsman' %}">Спортсмени</a>
-        </li>
-
-        <li class="nav-item">
           <a class="nav-link {{ activeSchool }}" href="{% url 'school' %}">Зали</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link {{ activeBelt }}" href="{% url 'belt' %}">Пояси</a>
         </li>
 
         <li class="nav-item">
@@ -38,8 +30,17 @@
         </li>
 
         <li class="nav-item">
+          <a class="nav-link {{ activeSportsman }}" href="{% url 'sportsman' %}">Спортсмени</a>
+        </li>
+
+        <li class="nav-item">
           <a class="nav-link {{ activeTimetable }}" href="{% url 'timetable' %}">Графік</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link {{ activeBelt }}" href="{% url 'belt' %}">Пояси</a>
+        </li>
+
       </ul>
     </div>
 
@@ -109,7 +110,7 @@
       {% if data %}
 
       {% for one in data %}
-      <tr {% if one.slug == request.GET.slug %}class="table-active" {% endif %}>
+      <tr {% if one.slug == request.GET.slug %}class="table-active align-middle" {% endif %} class='align-middle'>
         {% block table %}
         <td>
           <div class='alert-danger'>Не створено шаблону для
@@ -164,9 +165,7 @@
       {% endfor %}
 
       {%else%}
-      <div class='alert alert-danger'>Не має добавлених <span class='alert-success'>{{ title }}</span>! Шаблон цієї
-        сторінки: <span class='alert-success'>{{table}}<span>
-      </div>
+      <div class='alert alert-danger text-center'>Ви ще не добавили - <span class='alert-success'>{{ title }}</span>! Скористайтесь кнопкою вгорі щоб добавити!</div>
       {% endif %}
     </tbody>
 
@@ -174,6 +173,7 @@
 
   </table>
 
+  <!-- Переключення по сорінках -->
   <div class="pagination">
     <span class="step-links">
       {% if page_obj.has_previous %}
@@ -191,7 +191,7 @@
       {% endif %}
     </span>
   </div>
-
+  <!-- Переключення по сорінках -->
 </div>
 
 <!-- Modal Add -->
@@ -207,7 +207,6 @@
           {% csrf_token %}
 
           {% block formsadd %}
-
           {% for f in form %}
 
           <div class="form-floating col-md-6" bis_skin_checked="1">

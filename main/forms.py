@@ -10,6 +10,16 @@ from coach.models import Coach
 
 class RegisterUserForm(UserCreationForm):
 
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+
+        self.fields['telephone'].help_text = 'Мобільний у форматі - 380ХХХХХХХХХ'
+        self.fields['password1'].help_text = 'Пароль повинен складатись з 8 символів, включати літери та цифри!'
+
+    class Meta:
+        model = Coach
+        fields = ('username', 'email', 'password1',
+                  'password2', 'first_name', 'last_name', 'surname', 'dataBirth', 'telephone')
     username = forms.CharField(label='Логін', widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Придумайте собі логін'}))
     email = forms.EmailField(
@@ -27,14 +37,9 @@ class RegisterUserForm(UserCreationForm):
     dataBirth = forms.DateField(label="Дата народження", widget=forms.DateInput(
         attrs={'class': 'form-control', 'type': 'date'}))
     telephone = forms.IntegerField(label="Номер телефону", widget=forms.NumberInput(
-        attrs={'class': 'form-control', 'placeholder': 'Введіть номер телефону: 380681111111'}))
+        attrs={'class': 'form-control', 'placeholder': '380ХХХХХХХХХ'}))
     # telephone2 = forms.IntegerField(label="Номер телефону 2", widget=forms.NumberInput(
     #     attrs={'class': 'form-control', 'placeholder': 'Введіть номер телефону 2'}))
-
-    class Meta:
-        model = Coach
-        fields = ('username', 'email', 'password1',
-                  'password2', 'first_name', 'last_name', 'surname', 'dataBirth', 'telephone')
 
 
 class LoginUserForm(AuthenticationForm):
