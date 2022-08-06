@@ -46,7 +46,7 @@ class Group(models.Model):
                                null=True)
 
     coach = models.ForeignKey(Coach,
-                              on_delete=models.CASCADE,
+                              on_delete=models.SET_NULL,
                               blank=True,
                               null=True)
     slug = models.SlugField(max_length=255, unique=True,

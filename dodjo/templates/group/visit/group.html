@@ -21,7 +21,7 @@
 <td>
   {% for timetable  in one.timetable_set.all %}
   {%for day in timetable.days.all%}
-  <a href="{% url 'timetable-edit' timetable.id %}">{{day}}
+  <a href="{% url 'timetable-edit' timetable.slug %}">{{day}}
     {{timetable.timeStart|date:'H:i'}}-{{timetable.timeFinish|date:'H:i'}}</a><br>
   {%endfor%}
 

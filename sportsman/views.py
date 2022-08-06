@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from additional.add import CustomSuccessMessageMixin
 from django.contrib import messages
+from django.db.models import Q
 
 
 class SportsmanEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
@@ -23,9 +24,14 @@ class SportsmanEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateVie
 #  Функція що заюороняє редагувати якщо ти не створював
 
     def get_form_kwargs(self):
+
         kwargs = super().get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        if kwargs['instance'].coach == None:
+            return kwargs
         if self.request.user != kwargs['instance'].coach:
             return self.handle_no_permission()
+
         return kwargs
 
 
@@ -45,6 +51,13 @@ class SportsmanView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, L
         context['activeSportsman'] = 'active'
         context['title'] = Sportsman._meta.verbose_name
         context['titles'] = Sportsman._meta.verbose_name_plural
+
+        search = self.request.GET.get('search')
+        query = self.request.GET.get('query')
+        if search == 'name' and query:
+            sportsman = Sportsman.objects.filter(
+                Q(first_name__startswith=query, coach_id=self.request.user.id) | Q(last_name__startswith=query, coach_id=self.request.user.id))
+            context['data'] = sportsman
         return context
 
     def form_valid(self, form):
@@ -56,7 +69,14 @@ class SportsmanView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, L
     # фільтр що відображати
 
     def get_queryset(self):
-        return Sportsman.objects.filter(coach=self.request.user)
+        return Sportsman.objects.filter(Q(coach=self.request.user) | Q(coach_id=None))
+
+    # Передаємо user_id з request в форму
+
+    def get_form_kwargs(self):
+        kwargs = super(SportsmanView, self).get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        return kwargs
 
 
 class sportsmanDeleteView(LoginRequiredMixin, CustomSuccessMessageMixin, DeleteView):

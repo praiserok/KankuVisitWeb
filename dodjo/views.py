@@ -1,4 +1,6 @@
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from flask import request
 from dodjo.models import School, Group, Timetable
 from dodjo.forms import SchoolAddForm, GroupAddForm, TimetableAddForm
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
@@ -6,6 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from additional.add import CustomSuccessMessageMixin
 from django.contrib import messages
+from django.db.models import Q
+
 
 ####### ШКОЛА #######
 
@@ -37,7 +41,14 @@ class SchoolView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, List
     # фільтр що відображати
 
     def get_queryset(self):
-        return School.objects.filter(coach=self.request.user)
+        return School.objects.filter(Q(coach=self.request.user) | Q(coach_id=None))
+
+# Передаємо user_id з request в форму
+
+    def get_form_kwargs(self):
+        kwargs = super(SchoolView, self).get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        return kwargs
 
 
 class SchoolEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
@@ -54,6 +65,9 @@ class SchoolEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        if kwargs['instance'].coach == None:
+            return kwargs
         if self.request.user != kwargs['instance'].coach:
             return self.handle_no_permission()
         return kwargs
@@ -91,6 +105,7 @@ class GroupView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, ListV
     success_msg = Group._meta.verbose_name + ' добавлена успішно!'
     context_object_name = 'data'
     paginate_by = 25  # if pagination is desired
+#   form = GroupAddForm(user_id=self.request.user.id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -112,6 +127,12 @@ class GroupView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, ListV
     def get_queryset(self):
         return Group.objects.filter(coach=self.request.user)
 
+# Передаємо user_id з request в форму
+    def get_form_kwargs(self):
+        kwargs = super(GroupView, self).get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        return kwargs
+
 
 class GroupEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
     model = Group
@@ -126,9 +147,10 @@ class GroupEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
         return context
 
     def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+        kwargs = super(GroupEditView, self).get_form_kwargs()
         if self.request.user != kwargs['instance'].coach:
             return self.handle_no_permission()
+        kwargs.update({'user_id': self.request.user.id})
         return kwargs
 
 
@@ -180,8 +202,14 @@ class TimetableView(LoginRequiredMixin, CustomSuccessMessageMixin, CreateView, L
 
     # фільтр що відображати
 
-    # def get_queryset(self):
-    #     return Sportsman.objects.filter(coach=self.request.user)
+    def get_queryset(self):
+        return Timetable.objects.filter(group__school__coach=self.request.user)
+
+    # Передаємо user_id з request в форму
+    def get_form_kwargs(self):
+        kwargs = super(TimetableView, self).get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        return kwargs
 
 
 class TimetableEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateView):
@@ -196,11 +224,12 @@ class TimetableEditView(LoginRequiredMixin, CustomSuccessMessageMixin, UpdateVie
         context['activeTimetable'] = 'active'
         return context
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     if self.request.user != kwargs['instance'].group:
-    #         return self.handle_no_permission()
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user_id': self.request.user.id})
+        # if self.request.user != kwargs['instance'].group:
+        #     return self.handle_no_permission()
+        return kwargs
 
 
 class TimetableDeleteView(LoginRequiredMixin, CustomSuccessMessageMixin, DeleteView):

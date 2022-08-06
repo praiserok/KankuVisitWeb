@@ -11,17 +11,20 @@ class SchoolAddForm(ModelForm):
     class Meta:
         model = School
         # fields = '__all__'
-        exclude = ['slug', 'coach']
+        exclude = ['slug']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть назва'}),
             'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть місто'}),
             'adress': TextInput(attrs={'class': 'form-control', 'placeholder': 'Введіть адресу'}),
-            # 'coach': Select(attrs={'class': 'form-select '}),
+            'coach': Select(attrs={'class': 'form-select '}),
         }
 
     def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id', None)
         super().__init__(*args, **kwargs)
-        # self.fields['coach'].empty_label = 'Тренера не обарано'
+        self.fields['coach'].empty_label = None
+        self.fields['coach'].queryset = Coach.objects.filter(
+            id=user_id)
 
 
 class GroupAddForm(ModelForm):
@@ -39,10 +42,11 @@ class GroupAddForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        user_id = kwargs.pop('user_id', None)
+        super(GroupAddForm, self).__init__(*args, **kwargs)
         self.fields['school'].empty_label = None
-        # self.fields['school'].value =
-        # self.fields['coach'].empty_label = 'Тренера не обарано'
+        self.fields['school'].queryset = School.objects.filter(
+            coach=user_id)
 
 
 class TimetableAddForm(ModelForm):
@@ -64,5 +68,8 @@ class TimetableAddForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        user_id = kwargs.pop('user_id', None)
         super().__init__(*args, **kwargs)
         self.fields['group'].empty_label = None
+        self.fields['group'].queryset = Group.objects.filter(
+            school__coach=user_id)

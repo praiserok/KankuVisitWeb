@@ -57,8 +57,20 @@
 
 {%block content%}
 
-<div class="d-flex mb-2">
-  <h1 class="me-auto">{{ titles }}</h1>
+<div class="d-flex justify-content-between mb-2">
+  <h1 class="">{{ titles }}</h1>
+ 
+{% if activeSportsman %}
+ <!-- Форма пошуку -->
+<form class='mr-2' method='get'>
+ <div class="input-group">
+  <input type='text' class='form-control' name='query' placeholder="Пошук"/>
+  <input type="hidden" name='search' value='name' class="form-control rounded" />
+  <button type="submit" class="btn btn-outline-primary">Пошук</button>
+</div>
+</form>
+<!-- Форма пошуку -->
+{% endif %}
 
   {% if title %}
   <button type="button" class="btn btn-outline-danger d-sm-none" data-bs-toggle="modal" data-bs-target="#modalAdd">
@@ -137,8 +149,8 @@
 
             <form id='delete_form{{one.id}}' action="{% block urldelete %}{% endblock %}" method="post">{% csrf_token %}
             </form>
-            <a href="javascript:void()" onclick='delete_question{{one.id}}()' class="btn btn-danger btn-sm" tabindex="-1"
-              role="button" aria-disabled="true">
+            <a href="javascript:void()" onclick='delete_question{{one.id}}()' class="btn btn-danger btn-sm"
+              tabindex="-1" role="button" aria-disabled="true">
               <script>
                 function delete_question{{one.id}}() {
                   if (confirm('Ви впевнені що хочете видалити {{one.first_name}} {{one.last_name}}?')) {
@@ -165,7 +177,8 @@
       {% endfor %}
 
       {%else%}
-      <div class='alert alert-danger text-center'>Ви ще не добавили - <span class='alert-success'>{{ title }}</span>! Скористайтесь кнопкою вгорі щоб добавити!</div>
+      <div class='alert alert-danger text-center'>Ви ще не добавили - <span class='alert-success'>{{ title }}</span>!
+        Скористайтесь кнопкою вгорі щоб добавити!</div>
       {% endif %}
     </tbody>
 
